@@ -10,10 +10,6 @@
 - 🌐 跨平台支持 (Windows, macOS, Linux)
 - ⚡ 高精度计时，每100毫秒更新一次
 
-## 🖼️ 应用截图
-
-![时钟应用截图](Avalonia_CrossPlatform_Apps/Assets/Clock.png)
-
 ## 🚀 快速开始
 
 ### 前提条件
