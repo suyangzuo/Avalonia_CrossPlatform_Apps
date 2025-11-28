@@ -14,15 +14,58 @@
         d:DesignWidth="800"
         MinWidth="350"
         MinHeight="500"
-        Icon="/Assets/Clock.png"
+        Icon="/Assets/Clock.ico"
         WindowStartupLocation="CenterScreen"
         Background="Transparent"
         TransparencyLevelHint="AcrylicBlur"
         ExtendClientAreaToDecorationsHint="True"
         mc:Ignorable="d">
+    <Window.Styles>
+        <!-- 标题栏按钮悬停样式 -->
+        <!-- 关闭按钮的悬停样式 - 使用更高优先级的选择器 -->
+        <!-- 注意：由于 ExtendClientAreaToDecorationsHint="True"，Windows 可能使用系统原生按钮 -->
+        <!-- 如果样式不生效，可能需要自定义标题栏或禁用 ExtendClientAreaToDecorationsHint -->
+        <Style Selector="Button:pointerover">
+            <Setter Property="Background" Value="#3E3E42"/>
+        </Style>
+        <Style Selector="Button:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#3E3E42"/>
+        </Style>
+        <!-- 关闭按钮样式 - 尝试多种选择器策略 -->
+        <Style Selector="Button:last-child:pointerover">
+            <Setter Property="Background" Value="#E81123"/>
+        </Style>
+        <Style Selector="Button:last-child:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#E81123"/>
+        </Style>
+        <!-- 使用 nth-last-child 选择最后一个按钮 -->
+        <Style Selector="Button:nth-last-child(1):pointerover">
+            <Setter Property="Background" Value="#E81123"/>
+        </Style>
+        <Style Selector="Button:nth-last-child(1):pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#E81123"/>
+        </Style>
+        
+        <!-- 菜单项边框样式 -->
+        <!-- 默认状态：透明边框，防止悬停时抖动 -->
+        <Style Selector="MenuItem">
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+        </Style>
+        <!-- 悬停状态：边框显示颜色 -->
+        <Style Selector="MenuItem:pointerover">
+            <Setter Property="BorderBrush" Value="#5A5A5A"/>
+        </Style>
+        
+        <!-- 二级菜单弹出位置 - 向下移动2像素 -->
+        <Style Selector="MenuItem /template/ Popup">
+            <Setter Property="VerticalOffset" Value="2"/>
+            <Setter Property="HorizontalOffset" Value="-1" />
+        </Style>
+    </Window.Styles>
     <DockPanel>
         <!-- 菜单栏 -->
-        <Menu DockPanel.Dock="Top" Background="#1E1E1E">
+        <Menu DockPanel.Dock="Top" Background="#1E1E1E" Padding="2">
             <!-- 文件菜单 -->
             <MenuItem Header="文件(_F)">
                 <MenuItem Header="退出(_X)" Click="ExitMenuItem_Click" />

@@ -2,6 +2,8 @@ using System.Runtime.InteropServices;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using System.ComponentModel;
+using System.Linq;
+using Avalonia.Threading;
 
 namespace Avalonia_CrossPlatform_Apps.Views;
 
@@ -33,6 +35,7 @@ public partial class MainWindow : Window
         {
             InitializeClockVisibility();
             InitializeCheckBoxIcon();
+            SetupTitleBarButtonStyles();
         };
     }
     
@@ -82,6 +85,14 @@ public partial class MainWindow : Window
         Padding = new Avalonia.Thickness(0, titleBarHeight, 0, 0);
     }
     
+    private void SetupTitleBarButtonStyles()
+    {
+        // 注意：由于使用 ExtendClientAreaToDecorationsHint="True"，
+        // Windows 平台可能使用系统原生标题栏按钮，无法通过代码直接访问
+        // 样式选择器应该能够处理大部分情况
+        // 如果样式不生效，可能需要自定义标题栏实现
+    }
+    
     // 退出菜单项点击事件
     private void ExitMenuItem_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
@@ -115,61 +126,81 @@ public partial class MainWindow : Window
     // 关于菜单项点击事件
     private void AboutMenuItem_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        // 创建一个新的窗口作为对话框
-        var aboutWindow = new Window
+        try
         {
-            Title = "应用信息",
-            Width = 400,
-            Height = 250,
-            WindowStartupLocation = WindowStartupLocation.CenterOwner,
-            CanResize = false,
-            ShowInTaskbar = false
-        };
-        
-        var okButton = new Button
-        {
-            Content = "确定",
-            HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center,
-            HorizontalContentAlignment = Avalonia.Layout.HorizontalAlignment.Center,
-            VerticalContentAlignment = Avalonia.Layout.VerticalAlignment.Center,
-            Margin = new Avalonia.Thickness(0, 20, 0, 0),
-            Width = 100
-        };
-        okButton.Click += (s, args) => aboutWindow.Close();
-        
-        aboutWindow.Content = new StackPanel
-        {
-            Margin = new Avalonia.Thickness(20),
-            Spacing = 10,
-            Children =
+            // 创建一个新的窗口作为对话框
+            var aboutWindow = new Window
             {
-                new TextBlock
-                {
-                    Text = "时钟应用",
-                    FontSize = 20,
-                    FontWeight = Avalonia.Media.FontWeight.Bold,
-                    HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center,
-                    Margin = new Avalonia.Thickness(0, 0, 0, 10)
-                },
-                new TextBlock
-                {
-                    Text = "版本: 1.0.0",
-                    HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center
-                },
-                new TextBlock
-                {
-                    Text = "基于 Avalonia UI 框架开发",
-                    HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center
-                },
-                new TextBlock
-                {
-                    Text = "支持 Windows、Linux 和 macOS 平台",
-                    HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center
-                },
-                okButton
+                Title = "应用信息",
+                Width = 400,
+                Height = 250,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                CanResize = false,
+                ShowInTaskbar = false
+            };
+            
+            // 尝试设置图标，如果失败则使用主窗口的图标
+            try
+            {
+                aboutWindow.Icon = new WindowIcon("/Assets/Clock.ico");
             }
-        };
-        
-        aboutWindow.ShowDialog(this);
+            catch
+            {
+                // 如果图标加载失败，使用主窗口的图标
+                aboutWindow.Icon = this.Icon;
+            }
+            
+            var okButton = new Button
+            {
+                Content = "确定",
+                HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center,
+                HorizontalContentAlignment = Avalonia.Layout.HorizontalAlignment.Center,
+                VerticalContentAlignment = Avalonia.Layout.VerticalAlignment.Center,
+                Margin = new Avalonia.Thickness(0, 20, 0, 0),
+                Width = 100
+            };
+            okButton.Click += (s, args) => aboutWindow.Close();
+            
+            aboutWindow.Content = new StackPanel
+            {
+                Margin = new Avalonia.Thickness(20),
+                Spacing = 10,
+                Children =
+                {
+                    new TextBlock
+                    {
+                        Text = "时钟应用",
+                        FontSize = 20,
+                        FontWeight = Avalonia.Media.FontWeight.Bold,
+                        HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center,
+                        Margin = new Avalonia.Thickness(0, 0, 0, 10)
+                    },
+                    new TextBlock
+                    {
+                        Text = "版本: 1.0.0",
+                        HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center
+                    },
+                    new TextBlock
+                    {
+                        Text = "基于 Avalonia UI 框架开发",
+                        HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center
+                    },
+                    new TextBlock
+                    {
+                        Text = "支持 Windows、Linux 和 macOS 平台",
+                        HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center
+                    },
+                    okButton
+                }
+            };
+            
+            aboutWindow.ShowDialog(this);
+        }
+        catch (System.Exception ex)
+        {
+            // 如果出现异常，显示错误消息而不是让程序崩溃
+            // 这里可以记录日志或显示错误对话框
+            System.Diagnostics.Debug.WriteLine($"打开应用信息对话框时出错: {ex.Message}");
+        }
     }
 }

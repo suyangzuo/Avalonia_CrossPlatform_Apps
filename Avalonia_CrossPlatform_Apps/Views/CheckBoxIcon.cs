@@ -33,6 +33,7 @@ public class CheckBoxIcon : UserControl
             Foreground = new SolidColorBrush(Colors.White),
             HorizontalAlignment = HorizontalAlignment.Center,
             VerticalAlignment = VerticalAlignment.Center,
+            Margin = new Avalonia.Thickness(0.75, 0.75, 0, 0),
             IsVisible = false
         };
         
