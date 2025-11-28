@@ -1,0 +1,106 @@
+<UserControl
+    x:Class="Avalonia_CrossPlatform_Apps.Views.MainView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:Avalonia_CrossPlatform_Apps.ViewModels"
+    x:DataType="vm:MainViewModel"
+    Background="#1E1E1E">
+    <Grid>
+        <!-- 使用一个内部 Grid 包裹所有内容，并垂直居中 -->
+        <Grid VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!--  日期和时间  -->
+            <TextBlock
+                x:Name="DateTextBlock"
+                Grid.Row="0"
+                Margin="0,0,0,10"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                FontFamily="Google Sans Code"
+                FontSize="24" />
+            <TextBlock
+                x:Name="TimeTextBlock"
+                Grid.Row="1"
+                Margin="0,0,0,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                FontFamily="Google Sans Code"
+                FontSize="48" />
+
+            <!--  时钟表盘  -->
+            <Canvas
+                x:Name="ClockCanvas"
+                Grid.Row="2"
+                Width="300"
+                Height="300"
+                Margin="0,25,0,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+            <!--  时钟背景  -->
+            <Ellipse
+                Width="300"
+                Height="300"
+                Fill="#2D2D30"
+                Stroke="#AAA"
+                StrokeThickness="2" />
+
+            <!--  刻度和数字将通过代码后台动态生成  -->
+
+            <!--  时针  -->
+            <Grid
+                Canvas.Left="150"
+                Canvas.Top="150"
+                RenderTransformOrigin="0.5,0.5">
+                <Grid.RenderTransform>
+                    <RotateTransform Angle="{Binding HourAngle}" />
+                </Grid.RenderTransform>
+                <Path
+                    Data="M0,0 L0,-70"
+                    Stroke="#FFFFFF"
+                    StrokeThickness="4" />
+            </Grid>
+
+            <!--  分针  -->
+            <Grid
+                Canvas.Left="150"
+                Canvas.Top="150"
+                RenderTransformOrigin="0.5,0.5">
+                <Grid.RenderTransform>
+                    <RotateTransform Angle="{Binding MinuteAngle}" />
+                </Grid.RenderTransform>
+                <Path
+                    Data="M0,0 L0,-90"
+                    Stroke="#FFFFFF"
+                    StrokeThickness="3" />
+            </Grid>
+
+            <!--  秒针  -->
+            <Grid
+                Canvas.Left="150"
+                Canvas.Top="150"
+                RenderTransformOrigin="0.5,0.5">
+                <Grid.RenderTransform>
+                    <RotateTransform Angle="{Binding SecondAngle}" />
+                </Grid.RenderTransform>
+                <Path
+                    Data="M0,0 L0,-100"
+                    Stroke="#FF5252"
+                    StrokeThickness="2" />
+            </Grid>
+
+            <!--  中心点  -->
+            <Ellipse
+                Canvas.Left="145"
+                Canvas.Top="145"
+                Width="10"
+                Height="10"
+                Fill="#FF5252" />
+        </Canvas>
+        </Grid>
+    </Grid>
+</UserControl>

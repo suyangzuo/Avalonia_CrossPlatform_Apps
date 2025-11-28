@@ -1,0 +1,48 @@
+<Window
+        x:Class="Avalonia_CrossPlatform_Apps.Views.MainWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="using:Avalonia_CrossPlatform_Apps.Views"
+        xmlns:vm="using:Avalonia_CrossPlatform_Apps.ViewModels"
+        Title="时钟"
+        Width="600"
+        Height="550"
+        Margin="0,50,0,50"
+        d:DesignHeight="600"
+        d:DesignWidth="800"
+        MinWidth="350"
+        MinHeight="500"
+        Icon="/Assets/Clock.png"
+        WindowStartupLocation="CenterScreen"
+        Background="Transparent"
+        TransparencyLevelHint="AcrylicBlur"
+        ExtendClientAreaToDecorationsHint="True"
+        mc:Ignorable="d">
+    <DockPanel>
+        <!-- 菜单栏 -->
+        <Menu DockPanel.Dock="Top" Background="#1E1E1E">
+            <!-- 文件菜单 -->
+            <MenuItem Header="文件(_F)">
+                <MenuItem Header="退出(_X)" Click="ExitMenuItem_Click" />
+            </MenuItem>
+            
+            <!-- 设置菜单 -->
+            <MenuItem Header="设置(_S)">
+                <MenuItem 
+                    x:Name="ShowClockMenuItem"
+                    Header="显示时钟(_C)"
+                    Click="ShowClockMenuItem_Click" />
+            </MenuItem>
+            
+            <!-- 关于菜单 -->
+            <MenuItem Header="关于(_A)">
+                <MenuItem Header="应用信息(_I)" Click="AboutMenuItem_Click" />
+            </MenuItem>
+        </Menu>
+        
+        <!-- 主内容区域 -->
+        <views:MainView x:Name="MainContentView" />
+    </DockPanel>
+</Window>
